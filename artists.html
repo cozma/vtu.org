@@ -11,11 +11,45 @@
 	<script src="js/jquery.dropotron.min.js"></script>
 	<script src="js/jquery.scrolly.min.js"></script>
 	<script src="js/jquery.onvisible.min.js"></script>
-	<script type="js/jquery.simpleWeather.js"></script>
-	<script type="js/jquery.simpleWeather.min.js"></script>
+	<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+	<script src="js/jquery.simpleWeather.js"></script>
+	<script src="js/jquery.simpleWeather.min.js"></script>
+
+	<script>
+	$(document).ready(function() {
+		$.simpleWeather({
+			location: 'Blacksburg, VA',
+			woeid: '12796475',
+			unit: 'f',
+			success: function(weather) {
+
+				if(weather.temp > 75) {
+					$('body').animate({backgroundColor: '#F7AC57'}, 1500);
+				} else {
+					$('body').animate({backgroundColor: '#0091c2'}, 1500);
+				}
+				html = '<h2><i class="icon-'+weather.code+'"></i> '+weather.temp+'&deg;'+weather.units.temp+'</h2>';
+				html += '<ul><li>'+weather.city+', '+weather.region+'</li>';
+				html += '<li class="currently">'+weather.currently+'</li>';
+
+
+				$("#weather").html(html);
+			},
+			error: function(error) {
+				$("#weather").html('<p>'+error+'</p>');
+			}
+		});
+	});
+
+
+
+	</script>
+
+
 	<script src="js/skel.min.js"></script>
 	<script src="js/skel-layers.min.js"></script>
 	<script src="js/init.js"></script>
+	<script src="js/weather.js"></script>
 	<noscript>
 		<link rel="stylesheet" href="css/skel.css" />
 		<link rel="stylesheet" href="css/style.css" />
@@ -31,26 +65,10 @@
 		$('body').css('opacity', '0').fadeTo(1500, 1,'swing'); 
 	});
 	</script>
-	<script>// Docs at http://simpleweatherjs.com
-	$(document).ready(function() {
-		$.simpleWeather({
-			location: 'Austin, TX',
-			woeid: '',
-			unit: 'f',
-			success: function(weather) {
-				html = '<h2><i class="icon-'+weather.code+'"></i> '+weather.temp+'&deg;'+weather.units.temp+'</h2>';
-				html += '<ul><li>'+weather.city+', '+weather.region+'</li>';
-				html += '<li class="currently">'+weather.currently+'</li>';
-				html += '<li>'+weather.wind.direction+' '+weather.wind.speed+' '+weather.units.speed+'</li></ul>';
-				
-				$("#weather").html(html);
-			},
-			error: function(error) {
-				$("#weather").html('<p>'+error+'</p>');
-			}
-		});
-	});
-	</script>
+	<script src="js/weather.js"></script>
+
+
+
 
 	<!-- Header -->
 	<div id="header2">
@@ -120,7 +138,9 @@
 
 	</div>
 
-	<div id="weather"></div>
+	<div id="weather"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/93/loader.gif" alt="Loading..." class="loading"><br />Loading...</div>
+
+
 
 
 	<!-- Carousel -->
@@ -262,7 +282,7 @@
 		<h2 class="icon fa-camera circled"><span class="label">Photos</span></h2>
 	</header>
 
-	<iframe src="//www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2Fthevtu&amp;width=300&amp;height=558&amp;colorscheme=dark&amp;show_faces=true&amp;header=false&amp;stream=true&amp;show_border=false&amp;appId=737808339632553" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100%; height:100%;" allowTransparency="true"></iframe>
+	<iframe src="//www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2Fthevtu&amp;width=300&amp;height=558&amp;colorscheme=dark&amp;show_faces=true&amp;header=false&amp;stream=true&amp;show_border=false&amp;appId=737808339632553" scrolling="no" frameborder="0" style="border:none; overflow:hidden;" allowTransparency="true"></iframe>
 
 
 </section>
