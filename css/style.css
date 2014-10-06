@@ -625,7 +625,6 @@ input[type="reset"].alt:hover,
 
 .icon:before {
 	display: inline-block;
-	font-family: FontAwesome;
 	font-size: 1.25em;
 	text-decoration: none;
 	font-style: normal;
@@ -1766,7 +1765,6 @@ header .icon.circled
   #weather h1 {
   	margin: 0;
   	color: #333;
-  	font-family: weather;
   	font-size: 50px;
   	font-weight: normal;
   	line-height: 1.0;
