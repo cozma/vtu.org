@@ -11,7 +11,7 @@
 body
 {
   position: relative;
-  background-image: url('../Directors/images/bg.jpg');
+  background-image: url('../images/bg.jpg');
   background-size: cover;
   background-position: center center;
   background-attachment: fixed;
@@ -48,6 +48,13 @@ h1,h2,h4,h5,h6
   font-weight: 400;
   color: #fff;
   line-height: 1.25em;
+}
+
+h7
+{
+  font-weight: 100;
+  color: #fff;
+  line-height: 1em;
 }
 
 h1 a, h2 a, h3 a, h4 a, h5 a, h6 a
@@ -813,7 +820,7 @@ header .icon.circled
   content: '';
   display: block;
   position: absolute;
-  right: 16px;
+  right: 5px;
   top: 16px;
   width: 40px;
   height: 40px;
@@ -1486,7 +1493,7 @@ header .icon.circled
   white-space: nowrap;
   position: relative;
   -webkit-overflow-scrolling: touch;
-  padding: 0 2em 0 2em;
+  padding: 0 0em 0 2em;
 }
 
 .carousel article
@@ -1518,10 +1525,152 @@ header .icon.circled
   top: 0;
   width: auto;
   margin-right: -2em;
-  margin-bottom: 3em;
+  margin-bottom: 2em;
 }
 
 .carousel article p
+{
+  text-align: center;
+}
+
+/*********************************************************************************/
+/* Carousel2                                                                      */
+/*********************************************************************************/
+
+.carousel2
+{
+  position: relative;
+  overflow: hidden;
+  padding: 0em 0 0em 0;
+  margin-top: 5;
+  margin-bottom: 5;
+}
+
+.carousel2 .forward,
+.carousel2 .backward
+{
+  position: absolute;
+  top: 50%;
+  width: 6em;
+  height: 0em;
+  margin-top: -6em;
+  cursor: pointer;
+}
+
+.carousel2 .forward
+{
+  right: 0;
+}
+
+.carousel2 .backward
+{
+  left: 0;
+}
+
+.carousel2 .forward:before,
+.carousel2 .backward:before
+{
+  content: '';
+  display: block;
+  width: 0em;
+  height: 0em;
+  border-radius: 0%;
+  background-color: rgba(72,57,73, 0.5);        
+  position: absolute;
+  top: 0%;
+  margin-top: -3em;
+  -moz-transition: background-color 0.35s ease-in-out;
+  -webkit-transition: background-color 0.35s ease-in-out;
+  -o-transition: background-color 0.35s ease-in-out;
+  -ms-transition: background-color 0.35s ease-in-out;
+  transition: background-color 0.35s ease-in-out;
+  -webkit-backface-visibility: hidden;
+}
+
+.carousel2 .forward:after,
+.carousel2 .backward:after
+{
+  content: '';
+  width: 3em;
+  height: 3em;
+  position: absolute;
+  top: 50%;
+  margin: -1.5em 0 0 0;
+  background: url('images/arrow.svg') no-repeat center center;
+}
+
+.carousel2 .forward:after
+{
+  right: -0.25em;
+}
+
+.carousel2 .backward:after
+{
+  left: -0.25em;
+  -moz-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  -ms-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
+
+.carousel2 .forward:before
+{
+  right: -3em;
+}
+
+.carousel2 .backward:before
+{
+  left: -3em;
+}
+
+.carousel2 .forward:hover:before,
+.carousel2 .backward:hover:before
+{
+  background-color: rgba(239,131,118, 0.75);
+}
+
+.carousel2 .reel
+{
+  white-space: nowrap;
+  position: relative;
+  -webkit-overflow-scrolling: touch;
+  padding: 0 2em 0 2em;
+}
+
+.carousel2 article
+{
+  display: inline-block;
+  width: 18em;
+  background: #fff;
+  text-align: center;
+  padding: 0 1em 0em 1em;
+  margin: 0 2em 0 0;
+  white-space: normal;
+  opacity: 1.0;
+  -moz-transition: opacity 0.75s ease-in-out;     
+  -webkit-transition: opacity 0.75s ease-in-out;      
+  -o-transition: opacity 0.75s ease-in-out;     
+  -ms-transition: opacity 0.75s ease-in-out;      
+  transition: opacity 0.75s ease-in-out;      
+}
+
+.carousel2 article.loading
+{
+  opacity: 0;
+}
+
+.carousel2 article .image
+{
+  position: relative;
+  left: -1em;
+  top: 0;
+  width: auto;
+  margin-right: -2em;
+  margin-bottom: 0em;
+}
+
+.carousel2 article p
 {
   text-align: center;
 }
@@ -1825,8 +1974,58 @@ header .icon.circled
     text-align: center;
   }
 
-
-
+.photo  
+{                 
+   float: left;  
+   display: block;  
+   position: relative;                
+   margin: 10px;   
+   border: 5px solid #EEEEEE;  
+   height: 270px;  
+   width: 370px;  
+   overflow: hidden;  
+}  
+.photo img  
+{    
+   position: absolute;    
+   top: 0;    
+   left: 0;    
+   border: 0;    
+}   
+.photo .caption   
+{  
+   position:absolute;  
+   background:#000;  
+   color:#fff;  
+   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";  /* IE 8 */   
+   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);  /* IE 5-7 */  
+   -moz-opacity:0.8;  /* old mozilla  */  
+   -khtml-opacity: 0.8;   /* old safari */     
+   opacity: 0.8;   /* modern browsers */  
+   width:100%;   
+   height: 270px;  
+   top:-270px;  
+   width:100%;  
+}  
+.photo .caption h2  
+{   
+   margin:10px;  
+   font-size:12px;  
+   font-stretch:narrower;  
+   font-weight:normal;  
+}  
+.photo .caption a  
+{   
+   font-size:11px;  
+   color:#FFF;  
+   background-color:#0398CF;  
+   text-decoration:none;  
+   padding:7px;  
+   -webkit-border-radius: 5px;  
+   -moz-border-radius: 5px;  
+   border-radius: 5px;  
+   margin:0 10px;   
+}  
 
 
 

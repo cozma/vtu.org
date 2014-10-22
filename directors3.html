@@ -1,0 +1,200 @@
+<!DOCTYPE HTML>
+
+<html>
+<head>
+	<title>VTU</title>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="description" content="" />
+	<meta name="keywords" content="" />
+	<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
+	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery.dropotron.min.js"></script>
+	<script src="js/jquery.scrolly.min.js"></script>
+	<script src="js/jquery.onvisible.min.js"></script>
+	<script src="js/jquery.simpleWeather.js"></script>
+	<script src="js/jquery.simpleWeather.min.js"></script>
+
+
+
+	<script>
+	$(document).ready(function() {
+		$.simpleWeather({
+			location: 'Blacksburg, VA',
+			woeid: '12796475',
+			unit: 'f',
+			success: function(weather) {
+
+				html = '<h2>'+weather.temp+'&deg;'+'</h2>';
+
+				$("#weather").html(html);
+			},
+			error: function(error) {
+				$("#weather").html('<p>'+error+'</p>');
+			}
+		});
+	});
+
+
+
+	</script>
+
+
+
+	<script src="js/skel.min.js"></script>
+	<script src="js/skel-layers.min.js"></script>
+	<script src="js/init.js"></script>
+	<script src="js/weather.js"></script>
+
+
+	<noscript>
+		<link rel="stylesheet" href="css/skel.css" />
+		<link rel="stylesheet" href="css/style.css" />
+		<link rel="stylesheet" href="css/style-desktop.css" />
+		<link rel="stylesheet" href="css/style-noscript.css" />
+	</noscript>
+	<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
+</head>
+<body class="homepage">
+
+	<script>
+	$(document).ready(function (){
+		$('body').css('opacity', '0').fadeTo(1500, 1,'swing'); 
+	});
+	</script>
+
+
+
+	<script type="text/javascript">
+	$(document).ready(function() {  
+		
+    //when hover over the div with class = photo,   
+    //find the caption and change its css top property value from its original value -270px to 0    
+    $('.photo').hover(function() {  
+    	$(this).find('.caption').stop().animate({ top: '0px' }, { duration: 1600, easing: 'easeOutBounce' });  
+    }, function() {  
+    //on mouseout, put the original value back in  
+    $(this).find('.caption').stop().animate({ top: '-270px' }, { duration: 1600, easing: 'easeOutBack' });  
+});  
+    
+}); 
+	</script>
+
+
+
+
+	<!-- Header -->
+	<div id="header3">
+
+		<!-- Inner -->
+		<div class="inner">
+			<header>
+			</header>
+			<footer>
+			</footer>
+		</div>
+
+		<!-- Nav -->
+		<nav id="nav">
+			<ul>
+				<li><a href="index.html">Home</a></li>
+
+				<li>
+					<a href="">Menu</a>
+					<ul>
+						<li><a href="artists.html" >Artist Gateway</a></li>
+						<li><a href="Directors/directors.html" >Directors</a></li>
+						<li><a href="index.html#signup" class="scrolly">Join VTU!</a></li>
+						<li>
+							<a href="index.html#connect" class="scrolly">Connect with us &hellip;</a>
+						</li>
+					</ul>
+				</li>
+
+				<li><a href="concerts.html">Concerts</a></li>
+				<li><a href="alts.html">Alt Sounds</a></li>
+				<li><a href="speakers.html">Speakers</a></li>
+				<li><a href="live.html">Lively Arts</a></li>
+				<li><a href="films.html">Films</a></li>
+				<li><a href="special.html">Special Events</a></li>
+				<li><a href="hh.html">House & Hospitality</a></li>
+				<li><a href="pr.html">Public Relations</a></li>
+
+			</ul>
+		</nav>
+
+	</div>
+
+	<div class="photo">  
+		<img src="images/buds.jpg" />  
+		<div class="caption">  
+			<h2>Some text goes here. More text goes here. Then some more text here. We need some more. And more. And more. And more. A lot more text goes here. A lot more text goes here. A lot more text goes here. A lot more text goes here. A lot more text goes here. A lot more text goes here. A lot more text goes here. A lot more text goes here. A lot more text goes here. A lot more text goes here. A lot more text goes here. A lot more text goes here. A lot more text goes here. A lot more text goes here. A lot more text goes here. A lot more text goes here. A lot more text goes here. A lot more text goes here. A lot more text goes here. A lot more text goes here. A lot more text goes here. A lot more text goes here.</h2>  
+			<a href="#">See More</a>  
+		</div>  
+	</div>  
+	<div class="photo">  
+		<img src="images/buds.jpg" />  
+		<div class="caption">  
+			<h2>We need more text here. More and more. And more. A lot more text goes here. A lot more text goes here. A lot more text goes here. A lot more text goes here. A lot more text goes here. A lot more text goes here. A lot more text goes here. A lot more text goes here. A lot more text goes here. A lot more text goes here. A lot more text goes here. A lot more text goes here. A lot more text goes here. A lot more text goes here. A lot more text goes here. A lot more text goes here. A lot more text goes here. A lot more text goes here. A lot more text goes here. A lot more text goes here. A lot more text goes here. A lot more text goes here.</h2>  
+			<a href="#">See More</a>  
+		</div>  
+	</div>
+
+
+
+
+	<!-- Footer -->
+	<div id="footer">
+		<div class="container">
+
+			<hr />
+			<div id="fb" class="row">
+				<div class="12u">
+
+					<!-- Contact -->
+					<section class="contact">
+						<header>
+						</header>
+						<ul class="icons">
+							<li><a href="http://twitter.com/thevtu" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+							<li><a href="http://facebook.com/thevtu" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+							<li><a href="http://instagram.com/thevtu" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+						</ul>
+					</section>
+
+					<!-- Copyright -->
+					<div class="copyright">
+						<img src="images/DSALogo.png" alt="" />
+
+						<ul class="menu">
+							<li>&copy; Virginia Tech Union  <li>All rights reserved</li></li><li>Design: <a href="http://cozma.tk">Dag Yeshiwas </a></li>
+						</ul>
+						<ul class="menu">
+							<li><p3>
+								<br>
+								327 Squires Student Center<br>
+								Blacksburg, VA 24061<br>
+								Office: 540.231.7117<br>
+								Fax: 540.231.7028
+							</p3></li>
+
+							<li>
+								<p3>
+									<a href="http://www.vt.edu">VT Home</a><br>
+									<a href="http://calendar.vt.edu">VT Events Calendar </a><br>
+									<a href="http://studentcenters.vt.edu">Student Centers</a><br>
+									<a href="http://www.tickets.vt.edu">SCA Box Office</a><br>
+									<a href="http://vtnews.vt.edu">VTnews</a><br>
+								</p3><li>
+							</ul>
+
+
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+	</body>
+	</html>

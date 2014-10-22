@@ -24,6 +24,25 @@
 </head>
 <body class="homepage">
 
+
+	<script>
+	$(document).ready(function() {
+		$('html, body').hide();
+
+		if (window.location.hash) {
+			setTimeout(function() {
+				$('html, body').scrollTop(0).show();
+				$(window).load(function() {
+					$("html, body").animate({ scrollTop: $(document).height() - 1300 }, 1000);
+				});
+			}, 0);
+		}
+		else {
+			$('html, body').show();
+		}
+	});
+	</script>
+
 	<!-- Header -->
 	<div id="header">
 
@@ -32,10 +51,10 @@
 			<header>
 				<h1><a href="#banner" id="logo" class="scrolly">Virginia Tech Union</a></h1>
 				<hr />
-				<p><a href="#banner" id="logo" class="scrolly">Entertaining Hokies since 1969	</a></p>
+				<p><a href="#banner" id="logo" class="scrolly">Entertaining Hokies since 1969!	</a></p>
 			</header>
 			<footer>
-				<a href="#banner" id="logo" class="scrolly"><img src="images/vtu.png"/><h6>Click to scroll...</h6></a>
+				<a href="#banner" id="logo" class="scrolly"><img src="images/vtu.png"/><br><h7>click to scroll...</h7></a>
 			</footer>
 		</div>
 
@@ -77,6 +96,8 @@
 		</header>
 	</section>
 
+
+
 	<!-- Carousel -->
 	<section class="carousel">
 		<div class="reel">
@@ -112,56 +133,88 @@
 					<p>Want something to do Saturday night?  Come out to Squires on November 7th from 9-1am for free food, games, and prizes!  We'll also have novelty activities and a live DJ!  Did we mention it's all FREE?!</p>							
 				</article>
 
+
+				<article>
+					<a href="https://www.facebook.com/events/1459448034315178" class="image featured"><img src="images/pic03.jpg" alt="" /></a>
+					<header>
+						<h3><a href="https://www.facebook.com/events/1459448034315178">#Gobblernights</a></h3>
+					</header>
+					<p>Want something to do Saturday night?  Come out to Squires on November 7th from 9-1am for free food, games, and prizes!  We'll also have novelty activities and a live DJ!  Did we mention it's all FREE?!</p>							
+				</article>
+
+
+				<article>
+					<a href="https://www.facebook.com/events/1459448034315178" class="image featured"><img src="images/pic03.jpg" alt="" /></a>
+					<header>
+						<h3><a href="https://www.facebook.com/events/1459448034315178">#Gobblernights</a></h3>
+					</header>
+					<p>Want something to do Saturday night?  Come out to Squires on November 7th from 9-1am for free food, games, and prizes!  We'll also have novelty activities and a live DJ!  Did we mention it's all FREE?!</p>							
+				</article>
+
+
+				<article>
+					<a href="https://www.facebook.com/events/1459448034315178" class="image featured"><img src="images/pic03.jpg" alt="" /></a>
+					<header>
+						<h3><a href="https://www.facebook.com/events/1459448034315178">#Gobblernights</a></h3>
+					</header>
+					<p>Want something to do Saturday night?  Come out to Squires on November 7th from 9-1am for free food, games, and prizes!  We'll also have novelty activities and a live DJ!  Did we mention it's all FREE?!</p>							
+				</article>
+
 			</div>
 		</section>
-
-		<p2><a href="#signup" class="scrolly button">Want to be a part of the action?</a></p2>
-
-
-
+		<center>
+			<p>_____________________________________________________________________________________________________________________________________________________________</p>
+			<p>_____________________________________________________________________________________________________________________________________________________________</p></center>
 
 
-		<!-- Main -->
-		<div id="signup" class="wrapper style2">
-
-			<article id="main" class="container special">
-				<header>
-					<p>
-						<a href="#connect" class="image featured scrolly"><img src="images/pic06.png" alt="" /></a>
-					</p>
-
-				</header>
-			</article>
-
-		</div>
-
-		<!-- Footer -->
-		<div id="footer">
-			<div class="container">
-				<div class="row">
 
 
-					<!-- Tweets -->
-					<section id="connect" class="4u">
-						<header>
-							<h2 class="icon fa-twitter circled"><span class="label">Tweets</span></h2>
-						</header>
-						<ul class="divided">
-							<a class="twitter-timeline" href="https://twitter.com/thevtu" data-chrome="noheader nofooter noborders transparent noscrollbar" data-widget-id="407536189659283456">Tweets by @thevtu</a>
-							<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-						</ul>
-					</section>
 
-					<!-- Posts -->
-					<section class="4u">
-						<header>
-							<h2 class="icon fa-file circled"><span class="label">Contact Us</span></h2>
-						</header>
-						<ul class="divided">
-							<!-- Begin MailChimp Signup Form -->
-							<link href="//cdn-images.mailchimp.com/embedcode/classic-081711.css" rel="stylesheet" type="text/css">
-							<style type="text/css">
-							#mc_embed_signup{clear:left; font:14px Helvetica,Arial,sans-serif; }
+
+
+			<!-- Main -->
+			<div id="signup" class="wrapper style2">
+
+				<article id="main" class="container special">
+					<header>
+						<p>
+							<a href="#connect" class="image featured scrolly"><img src="images/pic06.png" alt="" /></a>
+						</p>
+
+					</header>
+				</article>
+
+			</div>
+
+
+
+			<!-- Footer -->
+			<div id="footer">
+				<div class="container">
+					<div class="row">
+
+
+						<!-- Tweets -->
+						<section id="connect" class="4u">
+							<header>
+								<h2 class="icon fa-twitter circled"><span class="label">Tweets</span></h2>
+							</header>
+							<ul class="divided">
+								<a class="twitter-timeline" href="https://twitter.com/thevtu" data-chrome="noheader nofooter noborders transparent noscrollbar" data-widget-id="407536189659283456">Tweets by @thevtu</a>
+								<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+							</ul>
+						</section>
+
+						<!-- Posts -->
+						<section class="4u">
+							<header>
+								<h2 class="icon fa-file circled"><span class="label">Contact Us</span></h2>
+							</header>
+							<ul class="divided">
+								<!-- Begin MailChimp Signup Form -->
+								<link href="//cdn-images.mailchimp.com/embedcode/classic-081711.css" rel="stylesheet" type="text/css">
+								<style type="text/css">
+								#mc_embed_signup{clear:left; font:14px Helvetica,Arial,sans-serif; }
 	/* Add your own MailChimp form style overrides in your site stylesheet or in this style block.
 	We recommend moving this block and the preceding CSS link to the HEAD of your HTML file. */
 	</style>
@@ -200,7 +253,7 @@
 <!-- Photos -->
 <section class="4u">
 	<header>
-		<h2 class="icon fa-camera circled"><span class="label">Photos</span></h2>
+		<h2 class="icon fa-facebook circled"><span class="label">Photos</span></h2>
 	</header>
 
 	<iframe src="//www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2Fthevtu&amp;width=300&amp;height=558&amp;colorscheme=dark&amp;show_faces=true&amp;header=false&amp;stream=true&amp;show_border=false&amp;appId=737808339632553" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100%; height:500;" allowTransparency="true"></iframe>
@@ -208,56 +261,66 @@
 
 </section>
 
-</div>
-<hr />
-<div id="fb" class="row">
-	<div class="12u">
-
-		<!-- Contact -->
-		<section class="contact">
-			<header>
-			</header>
-			<ul class="icons">
-				<li><a href="http://twitter.com/thevtu" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
-				<li><a href="http://facebook.com/thevtu" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
-				<li><a href="http://instagram.com/thevtu" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
-			</ul>
-		</section>
-
-		<!-- Copyright -->
-		<div class="copyright">
-			<img src="images/DSALogo.png" alt="" />
-
-			<ul class="menu">
-				<li>&copy; Virginia Tech Union  <li>All rights reserved</li></li><li>Design: <a href="http://cozma.tk">Dag Yeshiwas</a></li>
-			</ul>
-			<ul class="menu">
-				<li><p3>
-					<br>
-					327 Squires Student Center<br>
-					Blacksburg, VA 24061<br>
-					Office: 540.231.7117<br>
-					Fax: 540.231.7028
-				</p3></li>
-
-				<li>
-					<p3>
-						<a href="http://www.vt.edu">VT Home</a><br>
-						<a href="http://calendar.vt.edu">VT Events Calendar </a><br>
-						<a href="http://studentcenters.vt.edu">Student Centers</a><br>
-						<a href="http://www.tickets.vt.edu">SCA Box Office</a><br>
-						<a href="http://vtnews.vt.edu">VTnews</a><br>
-					</p3><li>
-				</ul>
 
 
+
+
+
+
+
+	<!-- Footer -->
+	<div id="footer">
+		<div class="container">
+
+			<hr />
+			<div id="fb" class="row">
+				<div class="12u">
+
+					<!-- Contact -->
+					<section class="contact">
+						<header>
+						</header>
+						<ul class="icons">
+							<li><a href="http://twitter.com/thevtu" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+							<li><a href="http://facebook.com/thevtu" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+							<li><a href="http://instagram.com/thevtu" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+						</ul>
+					</section>
+
+					<!-- Copyright -->
+					<div class="copyright">
+						<img src="images/DSALogo.png" alt="" />
+
+						<ul class="menu">
+							<li>&copy; Virginia Tech Union  <li>All rights reserved</li></li><li>Design: <a href="http://cozma.tk">Dag Yeshiwas </a></li>
+						</ul>
+						<ul class="menu">
+							<li><p3>
+								<br>
+								327 Squires Student Center<br>
+								Blacksburg, VA 24061<br>
+								Office: 540.231.7117<br>
+								Fax: 540.231.7028
+							</p3></li>
+
+							<li>
+								<p3>
+									<a href="http://www.vt.edu">VT Home</a><br>
+									<a href="http://calendar.vt.edu">VT Events Calendar </a><br>
+									<a href="http://studentcenters.vt.edu">Student Centers</a><br>
+									<a href="http://www.tickets.vt.edu">SCA Box Office</a><br>
+									<a href="http://vtnews.vt.edu">VTnews</a><br>
+								</p3><li>
+							</ul>
+
+
+						</div>
+
+					</div>
+
+				</div>
 			</div>
-
 		</div>
 
-	</div>
-</div>
-</div>
-
-</body>
-</html>
+	</body>
+	</html>

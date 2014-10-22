@@ -1,614 +1,304 @@
 /*
-	Parallelism by HTML5 UP
+	Helios by HTML5 UP
 	html5up.net | @n33co
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 */
 
-var parallelism = (function($) { var _ = {
+(function($) {
 
-	/******************************/
-	/* Properties                 */
-	/******************************/
-
-		// Settings
-			settings: {
-
-				// Popup overlay color.
-					popupOverlayColor: '#1a1f2c',
-				
-				// Popup overlay opacity.
-					popupOverlayOpacity: 0.75,
-
-				// Mobile only.
-				
-					// If true, mobile mode will get some automatic styling.
-						autoStyleMobile: true,
-				
-				// Desktop only.
-					
-					// If true, reel will be vertically centered.
-						centerVertically: true,
-					
-					// Delay (in ms) before showing the reel.
-						introDelay: 600,		
-						
-					// Speed (in ms) at which to fade in reel.
-						introSpeed: 750,
-					
-					// Height (in px) of items.
-						itemHeight: 230,
-
-					// Default width (in px) of width.
-						itemWidth: 300,
-						
-					// Margin (in px) to preserve at the bottom of the viewport.
-						marginBottom: 0,
-						
-					// Margin (in px) to preserve at the top of the viewport.
-						marginTop: 0,
-					
-					// Nudge the reel by this value (in px) after it's been vertically centered.
-						verticalNudge: -50,
-						
-					// Maximum number of rows.
-						maxRows: 3,
-						
-					// Minimum number of rows.
-						minRows: 1,
-						
-					// Padding (in px) between items (0 = no padding).
-						padding: 5,
-						
-					// Padding color.
-						paddingColor: '#fff',
-						
-					// If true, reel scroll will reset on page refresh.
-						resetScroll: true,
-						
-					// Scales the scroll delta (1 = normal, 2 = double, 0.5 = half, etc.).
-						scrollFactor: 1,
-						
-					// Scroll amount when using keys.
-						scrollKeyAmount: 50,
-						
-					// Determines where scrollwheel events should be captured ('window' or 'reel').
-						scrollWheelTarget: 'window',
-						
-					// Scroll amount when using scroll zones.
-						scrollZoneAmount: 10,	
-						
-					// Time (in ms) to wait between scrolls when the cursor is in a scroll zone.
-						scrollZoneDelay: 20,
-						
-					// Width of scroll zones.
-						scrollZoneWidth: 40,
-						
-					// Delay (in ms) before showing thumbnails.
-						thumbDelay: 1200,
-						
-					// Spread (in ms) to randomly stagger thumbnails (0 = don't stagger).
-						thumbDelaySpread: 1500,
-						
-					// Speed (in ms) at which to fade in thumbnails.
-						thumbSpeed: 750,
-						
-					// If true, page will blur slightly when the popup is displayed (webkit only).
-						useBlurFilter: false,
-						
-					// If true, the left/right arrow keys will scroll the reel.
-						useScrollKeys: true,
-						
-					// If true, moving the cursor to the leftmost/rightmost edges of the reel will scroll it.
-						useScrollZones: true
-
+	var settings = {
+		
+		// Header (homepage only)
+			header: {
+				fullScreen: true,
+				fadeIn: true,
+				fadeDelay: 500
 			},
-		
-		// Touch device?
-			isTouch: false,
-		
-		// IE version.
-			IEVersion: 99,
-		
-		// Object cache.
-			objects: {},
 
-	/******************************/
-	/* Methods                    */
-	/******************************/
+		// Carousels
+			carousels: {
+				speed: 4,
+				fadeIn: true,
+				fadeDelay: 250
+			},
+	
+	};
+	
+	skel.init({
+		reset: 'full',
+		breakpoints: {
+			'global':	{ range: '*', href: 'css/style.css', containers: 1400, grid: { gutters: 48 } },
+			'wide':		{ range: '-1680', href: 'css/style-wide.css', containers: 1200 },
+			'normal':	{ range: '-1280', href: 'css/style-normal.css', containers: '100%', grid: { gutters: 36 } },
+			'narrow':	{ range: '-960', href: 'css/style-narrow.css', grid: { gutters: 32 } },
+			'narrower': { range: '-840', href: 'css/style-narrower.css', grid: { collapse: true } },
+			'mobile':	{ range: '-736', href: 'css/style-mobile.css', grid: { gutters: 16 }, viewport: { scalable: false } }
+		},
+		plugins: {
+			layers: {
+				config: {
+					transformTest: function() { return skel.vars.isMobile; }
+				},
+				navPanel: {
+					hidden: true,
+					breakpoints: 'mobile',
+					position: 'top-left',
+					side: 'top',
+					width: '100%',
+					height: 250,
+					animation: 'pushY',
+					clickToClose: true,
+					swipeToClose: false,
+					html: '<div data-action="navList" data-args="nav"></div>',
+					orientation: 'vertical'
+				},
+				navButton: {
+					breakpoints: 'mobile',
+					position: 'top-center',
+					side: 'top',
+					width: 100,
+					height: 50,
+					html: '<div class="toggle" data-action="toggleLayer" data-args="navPanel"></div>'
+				}
+			}
+		}
+	});
 
-		// Initializes desktop mode.
-			initDesktop: function() {
+	$(function() {
 
-				var $SZ = $(''), $SZLeft, $SZRight;
-					
-				var	windowHeight = _.objects.window.height() - _.settings.marginTop - _.settings.marginBottom,
-					windowWidth = _.objects.window.width(),
-					itemHeight = _.settings.itemHeight,
-					itemCount = _.objects.items.length,
-					itemsWidth = 0,
-					rows = 0,
-					rowWidth,
-					SZIntervalId;
-				
-				// Window.
-					_.objects.window._parallelism_update = function() {
-						var i, j, x, y, t;
-
-						// Calculate number of rows we can fit on the screen.
-							rows = Math.min(Math.max(Math.floor(windowHeight / itemHeight) - 1, 1), _.settings.maxRows);
-
-						// Reduce row count if we have more than we need.
-							while ( rows > _.settings.minRows && (itemsWidth / rows) < windowWidth )
-								rows--;
-
-						// Get average row width.
-							rowWidth = Math.ceil( (itemsWidth / rows) * 1.1 );
-
-						// Resize items.
-							var w = 0, iw;
-							var rowStart = 0, rowPos = 0, rowEnded = false;
-							
-							_.objects.items.each(function(i) {
-								var $item = $(this);
-								
-								iw = $item.data('width');
-								
-								// Determine end row conditions.
-									
-									// Current item would push us past the row width.
-										if (w + iw >= rowWidth) {
-											
-											rowEnded = true;
-											rowEnd = i - 1;
-										
-										}
-									
-									// Current item is the last item.
-										else if (i + 1 >= itemCount) {
-											
-											w += iw;
-											rowEnded = true;
-											rowEnd = i;
-										
-										}
-								
-								// Did the row end?
-									if (rowEnded) {
-										
-										var pt = 0;
-										
-										// Rescale the row's items.
-											_.objects.items.slice(rowStart, rowEnd + 1).each(function(j) {
-												var $item = $(this);
-												var p = (($item.data('width') / w) * 100.00);
-												
-												if (pt + p > 100.00
-												||	( (rowStart + j) == rowEnd && pt + p < 100.00))
-													 p = 100.00 - pt;
-
-												$item.css('width', p + '%');
-												pt += p;
-												
-											});
-										
-										w = 0;
-										rowStart = i;
-										rowPos++;
-										rowEnded = false;
-									
-									}
-								
-								w += iw;
-							
-							});
-
-						// Resize reel.
-							_.objects.reel
-								.css('height', (itemHeight * rows) + (_.settings.padding * 2))
-								.css('width', rowWidth);
-						
-						// Reposition main (if applicable).
-							_.objects.main
-								.css('height', (itemHeight * rows) + (_.settings.padding * 2));
-						
-							if (_.settings.centerVertically)
-								_.objects.main
-									.css('top', '50%')
-									.css('margin-top', (-1 * (_.objects.main.outerHeight() / 2)) + _.settings.verticalNudge);
-
-						// Resize/reposition SZs.
-							window.setTimeout(function() {	
-								
-								$SZ
-									.css('height', _.objects.main.outerHeight())
-									.css('top', _.objects.main.offset().top);
-							
-							}, _.settings.introDelay);
-					
-					};
-
-					_.objects.window.resize(function() {
-						
-						// Update window dimensions.
-							windowWidth = _.objects.window.width();
-							windowHeight = _.objects.window.height() - _.settings.marginTop - _.settings.marginBottom;
-					
-						// Row count changed? Re-update.
-							if (Math.max(Math.floor(windowHeight / itemHeight) - 1, 1) != rows)
-								_.objects.window._parallelism_update();
-
-						// Update scroll zones.
-							$SZ._parallelism_update();
-					
-					});
-					
-				// Reel.
-					_.objects.reel
-						.css('overflow-y', 'hidden')
-						.css('margin', '0 auto')
-						.css('border', 'solid ' + _.settings.padding + 'px ' + _.settings.paddingColor)
-						.css('box-shadow', '0 0 0 ' + _.settings.padding + 'px ' + _.settings.paddingColor);
-
-					if (_.IEVersion < 9)
-						_.objects.reel.show();
-					else if (_.IEVersion < 10) {
-						
-						_.objects.reel.fadeTo(0,0.0001);
-
-						window.setTimeout(function() {
-							_.objects.reel.fadeTo(_.settings.introSpeed, 1);
-						}, _.settings.introDelay);
-					
-					}
-					else {
-						
-						_.objects.reel.css('opacity', 0);
-
-						window.setTimeout(function() {
-							_.objects.reel
-								.h5u_xcss('transition', 'opacity ' + (_.settings.introSpeed / 1000.00) + 's ease-in-out')
-								.css('opacity', 1);
-						}, _.settings.introDelay);
-					
-					}
-
-				// Items.
-					_.objects.items
-						.css('box-shadow', '0px 0px 0px ' + _.settings.padding + 'px ' + _.settings.paddingColor)
-						.css('border', 'solid ' + _.settings.padding + 'px ' + _.settings.paddingColor);
-					
-					_.objects.items.each(function(i) {
-						
-						var	$item = $(this), $img = $item.find('img');
-						var w, h;
-
-						w = parseInt($item.data('width'));
-						
-						if (!w)
-							w = _.settings.itemWidth;
-						
-						h = _.settings.itemHeight;
-					
-						// Add to total width.
-							itemsWidth += w;
-
-						// Item.
-							$item
-								.css('position', 'relative')
-								.css('width', w)
-								.css('height', h);
-						
-						// Image?
-							if ($img.length > 0) {
-								
-								var $itemInner, $h2;
-								
-								// img.
-									$img
-										.css('position', 'absolute')
-										.css('width', '100%')
-										.css('height', 'auto')
-										.css('min-height', '100%')
-										.css('top', 0)
-										.css('left', 0)
-										.attr('title', $item.text());
-
-								// inner (for fade effect).
-									$item.wrapInner('<div class="inner" />');
-									$itemInner = $item.children('.inner');
-									$itemInner
-										.css('position', 'relative')
-										.css('display', 'block')
-										.css('-webkit-backface-visibility', 'hidden')
-										.css('width', '100%')
-										.css('height', '100%');
-										
-									if (_.IEVersion < 9)
-										$itemInner.show();
-									else if (_.IEVersion < 10) {
-										
-										$itemInner.hide();
-										
-										$img
-											.load(function() {
-												window.setTimeout(function() {
-													$itemInner.fadeIn(_.settings.thumbSpeed);
-												}, _.settings.thumbDelay + Math.floor(Math.random() * _.settings.thumbDelaySpread));
-											});
-									
-									}
-									else {
-										
-										$itemInner.css('opacity', 0);
-										
-										$img
-											.load(function() {
-												$itemInner.h5u_xcss('transition', 'opacity ' + (_.settings.thumbSpeed / 1000.00) + 's ease-in-out');
-												
-												window.setTimeout(function() {
-													$itemInner.css('opacity', 1);
-												}, _.settings.thumbDelay + Math.floor(Math.random() * _.settings.thumbDelaySpread));
-											});
-									
-									}
-									
-									$img.attr('src', $img.attr('src'));
-							
-							}
-					
-					});
-
-				// Main.
-					if (_.isTouch)
-						_.objects.main
-							.css('overflow-x', 'auto')
-							.css('overflow-y', 'hidden')
-							.h5u_xcss('overflow-scrolling', 'touch');
-					else
-						_.objects.main.css('overflow', 'hidden');
-				
-				// Scrolling.
-
-					// Scroll Wheel.
-
-						if (_.IEVersion < 9)
-							_.objects.main.css('overflow-x', 'scroll');
-						else {
-							
-							var scrollHandler = function(e) {
-								var	delta = (e.detail ? e.detail * -10 : e.wheelDelta) * _.settings.scrollFactor;
-								_.objects.main.scrollLeft( _.objects.main.scrollLeft() - delta );
-								$SZ._parallelism_update();
-								e.preventDefault();
-								e.stopPropagation();
-							};
-
-							var st;
-							
-							if (_.settings.scrollWheelTarget == 'reel')
-								st = _.objects.main[0];
-							else
-								st = _.objects.window[0];
-								
-							st.addEventListener('DOMMouseScroll', scrollHandler, false);
-							st.addEventListener('mousewheel', scrollHandler, false);
-							
-						}
-						
-						if (_.settings.resetScroll)
-							window.setTimeout(function() {
-								_.objects.main.scrollLeft(0);
-							}, 0);
-
-					// Scroll Zones.
-						if (!_.isTouch && _.settings.useScrollZones) {
-							
-							_.objects.body.append('<div class="SZRight" style="right: 0;" />');
-							_.objects.body.append('<div class="SZLeft" style="left: 0;" />');
-							
-							$SZLeft = _.objects.body.children('.SZLeft');
-							$SZRight = _.objects.body.children('.SZRight');
-							$SZ = $SZLeft.add($SZRight);
-							
-							$SZ
-								.css('position', 'fixed')
-								.css('width', _.settings.scrollZoneWidth)
-								.css('height', 100)
-								.css('z-index', 100)
-								.css('background', 'rgba(255,255,255,0)') // Required due to a weird IE bug (affects <=10)
-								.css('top', 0);
-								
-							$SZ._parallelism_update = function() {
-								
-								if (_.objects.main.scrollLeft() == 0)
-									$SZLeft.hide();
-								else
-									$SZLeft.show();
-									
-								if (_.objects.main.scrollLeft() + $(window).width() >= _.objects.reel.outerWidth())
-									$SZRight.hide();
-								else
-									$SZRight.show();
-							
-							};
-							
-							$SZRight.bind('mouseenter', function(e) {
-							
-								SZIntervalId = window.setInterval(function() {
-									_.objects.main.scrollLeft( _.objects.main.scrollLeft() + (_.settings.scrollZoneAmount * _.settings.scrollFactor) );
-									$SZ._parallelism_update();
-								}, _.settings.scrollZoneDelay);
-								return false;
-							
-							});
-
-							$SZLeft.bind('mouseenter', function(e) {
-							
-								SZIntervalId = window.setInterval(function() {
-									_.objects.main.scrollLeft( _.objects.main.scrollLeft() - (_.settings.scrollZoneAmount * _.settings.scrollFactor) );
-									$SZ._parallelism_update();
-								}, _.settings.scrollZoneDelay);
-								return false;
-							
-							});
-							
-							$SZ.bind('mouseleave', function(e) {
-								window.clearInterval(SZIntervalId);
-							});
-						
-						}
-						else
-							$SZ._parallelism_update = function() {};
-
-					// Scroll Keys.
-						if (_.settings.useScrollKeys) {
-							
-							_.objects.window.keydown(function(e) {
-								if ($('.poptrox-popup').is(':visible'))
-									return;
-								
-								switch (e.keyCode)
-								{
-									case 39:
-										window.clearInterval(SZIntervalId);
-										_.objects.main.scrollLeft( _.objects.main.scrollLeft() + (_.settings.scrollKeyAmount * _.settings.scrollFactor) );
-										$SZ._parallelism_update();
-										return false;
-										
-									case 37:
-										window.clearInterval(SZIntervalId);
-										_.objects.main.scrollLeft( _.objects.main.scrollLeft() - (_.settings.scrollKeyAmount * _.settings.scrollFactor) );
-										$SZ._parallelism_update();
-										return false;
-										
-									default:
-										break;
-								}
-							});							
-						
-						}
-
-				// Poptrox.
-					_.objects.reel.poptrox({
-						onPopupClose: (_.settings.useBlurFilter ? (function() { _.objects.wrapper.removeClass('overlayed'); }) : null),
-						onPopupOpen: (_.settings.useBlurFilter ? (function() { _.objects.wrapper.addClass('overlayed'); }) : null),
-						overlayColor: _.settings.popupOverlayColor,
-						overlayOpacity: _.settings.popupOverlayOpacity,
-						popupCloserText: '',
-						popupLoaderText: '',
-						selector: '.thumb a',
-						usePopupCaption: true,
-						usePopupCloser: false,
-						usePopupDefaultStyling: false,
-						usePopupNav: true
-					});
-
-				// Trigger resize event.
-					_.objects.window.trigger('resize');	
+		var	$window = $(window),
+			$body = $('body'),
+			$header =  $('#header');
 			
-			},
-
-		// Initializes mobile mode.
-			initMobile: function() {
-
-				// Auto styling?
-					if (_.settings.autoStyleMobile) {
-						
-						// Items.
-							_.objects.items
-								.css('border', 'solid ' + Math.ceil(_.settings.padding / 2) + 'px ' + _.settings.paddingColor);
-
-							_.objects.items.filter('.thumb')
-								.css('margin-top', (-1 * Math.ceil(_.settings.padding / 2)) + 'px')
-								.filter(':nth-child(2n)')
-									.css('border-right', 0);
-							
-					}
-
-				// Items.
-					_.objects.items.each(function() {
-						
-						var $item = $(this), $img = $item.find('img');
-						
-						$img
-							.css('opacity', 0);
-						
-						$item
-							.css('background-image', 'url("' + $img.attr('src') + '")')
-							.css('background-position', 'center center')
-							.css('background-size', 'cover');
-						
-						
-					});
-
-				// Poptrox.
-					_.objects.reel.poptrox({
-						onPopupClose: (_.settings.useBlurFilter ? (function() { _.objects.wrapper.removeClass('overlayed'); }) : null),
-						onPopupOpen: (_.settings.useBlurFilter ? (function() { _.objects.wrapper.addClass('overlayed'); }) : null),
-						overlayColor: _.settings.popupOverlayColor,
-						overlayOpacity: _.settings.popupOverlayOpacity,
-						popupSpeed: 0,
-						selector: '.thumb a',
-						useBodyOverflow: false,
-						usePopupCaption: false,
-						usePopupCloser: false,
-						usePopupDefaultStyling: false,
-						usePopupLoader: false,
-						usePopupNav: false,
-						windowMargin: 0
-					});
+		// Disable animations/transitions until the page has loaded.
+			$body.addClass('is-loading');
 			
-			},
+			$window.on('load', function() {
+				$body.removeClass('is-loading');
+			});
+			
+		// CSS polyfills (IE<9).
+			if (skel.vars.IEVersion < 9)
+				$(':last-child').addClass('last-child');
 
-		// Main init method
-			init: function() {
-
-				// Skel.
-					skel.init({
-						reset: 'full',
-						pollOnce: true,
-						grid: { gutters: 5 },
-						containers: '100%',
-						breakpoints: {
-							global: { range: '*', href: 'css/style.css' },
-							desktop: { range: '737-', href: 'css/style-desktop.css', viewport: { width: 1280, scalable: false } },
-							mobile: { range: '-736', href: 'css/style-mobile.css', viewport: { scalable: false } }
-						}
+		// Forms (IE<10).
+			var $form = $('form');
+			if ($form.length > 0) {
+				
+				$form.find('.form-button-submit')
+					.on('click', function() {
+						$(this).parents('form').submit();
+						return false;
 					});
-					
-					_.isTouch = skel.vars.isTouch;
-					_.IEVersion = skel.vars.IEVersion;
-
-				// jQuery.
-					$.fn.h5u_xcss = function(k, v) { 
-						return $(this)
-							.css('-webkit-' + k, v)
-							.css('-moz-' + k, v)
-							.css('-o-' + k, v)
-							.css('-ms-' + k, v)
-							.css(k, v);
-					};
-
-				$(function() {
-
-					// Objects.
-						_.objects.window = $(window),
-						_.objects.wrapper = $('#wrapper'),
-						_.objects.body = $('body'),
-						_.objects.main = $('#main'),
-						_.objects.reel = $('#reel'),
-						_.objects.items = _.objects.main.find('.item');
-
-					// Mode.
-						if (skel.isActive('mobile'))
-							_.initMobile();
-						else
-							_.initDesktop();
-						
-				});
+		
+				if (skel.vars.IEVersion < 10) {
+					$.fn.n33_formerize=function(){var _fakes=new Array(),_form = $(this);_form.find('input[type=text],textarea').each(function() { var e = $(this); if (e.val() == '' || e.val() == e.attr('placeholder')) { e.addClass('formerize-placeholder'); e.val(e.attr('placeholder')); } }).blur(function() { var e = $(this); if (e.attr('name').match(/_fakeformerizefield$/)) return; if (e.val() == '') { e.addClass('formerize-placeholder'); e.val(e.attr('placeholder')); } }).focus(function() { var e = $(this); if (e.attr('name').match(/_fakeformerizefield$/)) return; if (e.val() == e.attr('placeholder')) { e.removeClass('formerize-placeholder'); e.val(''); } }); _form.find('input[type=password]').each(function() { var e = $(this); var x = $($('<div>').append(e.clone()).remove().html().replace(/type="password"/i, 'type="text"').replace(/type=password/i, 'type=text')); if (e.attr('id') != '') x.attr('id', e.attr('id') + '_fakeformerizefield'); if (e.attr('name') != '') x.attr('name', e.attr('name') + '_fakeformerizefield'); x.addClass('formerize-placeholder').val(x.attr('placeholder')).insertAfter(e); if (e.val() == '') e.hide(); else x.hide(); e.blur(function(event) { event.preventDefault(); var e = $(this); var x = e.parent().find('input[name=' + e.attr('name') + '_fakeformerizefield]'); if (e.val() == '') { e.hide(); x.show(); } }); x.focus(function(event) { event.preventDefault(); var x = $(this); var e = x.parent().find('input[name=' + x.attr('name').replace('_fakeformerizefield', '') + ']'); x.hide(); e.show().focus(); }); x.keypress(function(event) { event.preventDefault(); x.val(''); }); });  _form.submit(function() { $(this).find('input[type=text],input[type=password],textarea').each(function(event) { var e = $(this); if (e.attr('name').match(/_fakeformerizefield$/)) e.attr('name', ''); if (e.val() == e.attr('placeholder')) { e.removeClass('formerize-placeholder'); e.val(''); } }); }).bind("reset", function(event) { event.preventDefault(); $(this).find('select').val($('option:first').val()); $(this).find('input,textarea').each(function() { var e = $(this); var x; e.removeClass('formerize-placeholder'); switch (this.type) { case 'submit': case 'reset': break; case 'password': e.val(e.attr('defaultValue')); x = e.parent().find('input[name=' + e.attr('name') + '_fakeformerizefield]'); if (e.val() == '') { e.hide(); x.show(); } else { e.show(); x.hide(); } break; case 'checkbox': case 'radio': e.attr('checked', e.attr('defaultValue')); break; case 'text': case 'textarea': e.val(e.attr('defaultValue')); if (e.val() == '') { e.addClass('formerize-placeholder'); e.val(e.attr('placeholder')); } break; default: e.val(e.attr('defaultValue')); break; } }); window.setTimeout(function() { for (x in _fakes) _fakes[x].trigger('formerize_sync'); }, 10); }); return _form; };
+					$form.n33_formerize();
+				}
 
 			}
-			
-}; return _; })(jQuery);
 
-parallelism.init();
+		// Dropdowns.
+			$('#nav > ul').dropotron({ 
+				mode: 'fade',
+				speed: 350,
+				noOpenerFade: true,
+				alignment: 'center'
+			});
+
+		// Scrolly links.
+			$('.scrolly').scrolly();			
+
+		// Carousels.
+			$('.carousel').each(function() {
+				
+				var	$t = $(this),
+					$forward = $('<span class="forward"></span>'),
+					$backward = $('<span class="backward"></span>'),
+					$reel = $t.children('.reel'),
+					$items = $reel.children('article');
+				
+				var	pos = 0,
+					leftLimit,
+					rightLimit,
+					itemWidth,
+					reelWidth,
+					timerId;
+
+				// Items.
+					if (settings.carousels.fadeIn) {
+						
+						$items.addClass('loading');
+
+						$t.onVisible(function() {
+							var	timerId,
+								limit = $items.length - Math.ceil($window.width() / itemWidth);
+							
+							timerId = window.setInterval(function() {
+								var x = $items.filter('.loading'), xf = x.first();
+								
+								if (x.length <= limit) {
+									
+									window.clearInterval(timerId);
+									$items.removeClass('loading');
+									return;
+								
+								}
+								
+								if (skel.vars.IEVersion < 10) {
+									
+									xf.fadeTo(750, 1.0);
+									window.setTimeout(function() {
+										xf.removeClass('loading');
+									}, 50);
+								
+								}
+								else
+									xf.removeClass('loading');
+								
+							}, settings.carousels.fadeDelay);
+						}, 50);
+					}
+				
+				// Main.
+					$t._update = function() {
+						pos = 0;
+						rightLimit = (-1 * reelWidth) + $window.width();
+						leftLimit = 0;
+						$t._updatePos();
+					};
+				
+					if (skel.vars.IEVersion < 9)
+						$t._updatePos = function() { $reel.css('left', pos); };
+					else
+						$t._updatePos = function() { $reel.css('transform', 'translate(' + pos + 'px, 0)'); };
+					
+				// Forward.
+					$forward
+						.appendTo($t)
+						.hide()
+						.mouseenter(function(e) {
+							timerId = window.setInterval(function() {
+								pos -= settings.carousels.speed;
+
+								if (pos <= rightLimit)
+								{
+									window.clearInterval(timerId);
+									pos = rightLimit;
+								}
+								
+								$t._updatePos();
+							}, 10);
+						})
+						.mouseleave(function(e) {
+							window.clearInterval(timerId);
+						});
+				
+				// Backward.
+					$backward
+						.appendTo($t)
+						.hide()
+						.mouseenter(function(e) {
+							timerId = window.setInterval(function() {
+								pos += settings.carousels.speed;
+
+								if (pos >= leftLimit) {
+									
+									window.clearInterval(timerId);
+									pos = leftLimit;
+								
+								}
+								
+								$t._updatePos();
+							}, 10);
+						})
+						.mouseleave(function(e) {
+							window.clearInterval(timerId);
+						});
+						
+				// Init.
+					$window.load(function() {
+
+						reelWidth = $reel[0].scrollWidth;
+
+						skel.change(function() {
+				
+							if (skel.vars.isTouch) {
+								
+								$reel
+									.css('overflow-y', 'hidden')
+									.css('overflow-x', 'scroll')
+									.scrollLeft(0);
+								$forward.hide();
+								$backward.hide();
+							
+							}
+							else {
+								
+								$reel
+									.css('overflow', 'visible')
+									.scrollLeft(0);
+								$forward.show();
+								$backward.show();
+							
+							}
+
+							$t._update();
+						});
+
+						$window.resize(function() {
+							reelWidth = $reel[0].scrollWidth;
+							$t._update();
+						}).trigger('resize');
+
+					});
+				
+			});
+		
+		// Header.
+			if ($body.hasClass('homepage')) {
+				
+				if (settings.header.fullScreen) {
+					
+					$window.bind('resize.helios', function() {
+						window.setTimeout(function() {
+							var s = $header.children('.inner');
+							var sh = s.outerHeight(), hh = $window.height(), h = Math.ceil((hh - sh) / 2) + 1;
+
+							$header
+								.css('padding-top', h)
+								.css('padding-bottom', h);
+						}, 0);
+					}).trigger('resize');
+				
+				}
+
+				if (settings.header.fadeIn) {
+
+					$.n33_preloadImage = function(url, onload) { var $img = $('<img />'), _IEVersion = (navigator.userAgent.match(/MSIE ([0-9]+)\./) ? parseInt(RegExp.$1) : 99); $img.attr('src', url); if ($img.get(0).complete || _IEVersion < 9) (onload)(); else $img.load(onload); };
+					
+					$('<div class="overlay" />').appendTo($header);
+					
+					$window
+						.load(function() {
+							var imageURL = $header.css('background-image').replace(/"/g,"").replace(/url\(|\)$/ig, "");
+
+							$.n33_preloadImage(imageURL, function() {
+								
+								if (skel.vars.IEVersion < 10)
+									$header.children('.overlay').fadeOut(2000);
+								else
+									window.setTimeout(function() {
+										$header.addClass('ready');
+									}, settings.header.fadeDelay);
+							
+							});
+						});
+				
+				}
+
+			}
+
+	});
+
+})(jQuery);
